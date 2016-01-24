@@ -1,6 +1,8 @@
 package org.example.training
 
+import org.junit.Assert
 import spock.lang.Specification
+import spock.lang.Unroll
 
 /**
  * These are the first set of exercises for the Spock workshop. All you need
@@ -22,6 +24,19 @@ class Workshop01Spec extends Specification {
      * method. Think of suitable data sets, such as what happens if one or both
      * sides are zero.</p>
      */
+    @Unroll
+    def "calculate hypotenuse length for sides #side1 and #side2"() {
+        expect: "hypotenuse length is calculated correctly"
+        Assert.assertEquals(exercises.hypotenuseLength(side1, side2,), expected, 0.001)
+
+        where:
+        side1 | side2 | expected
+        0     | 3     | 3
+        3     | 0     | 3
+        0     | 0     | 0
+        1     | 1     | 1.414D
+        5     | 4     | 6.403D
+    }
 
     /**
      * <p>TODO #02: Write a feature method for {@link Exercises#hypotenuseLength(double, double)}
