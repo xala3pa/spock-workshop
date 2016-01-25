@@ -43,6 +43,24 @@ class Workshop01Spec extends Specification {
      * that checks the behaviour when either argument is negative. The method
      * should throw an IllegalArgumentException in this case.</p>
      */
+    @Unroll
+    def "should throw an IllegalArgumentException when #side1 or #side2 is negative"() {
+        when: "I calculate the hypotenuse with negatives side lengths"
+        exercises.hypotenuseLength(side1, side2)
+
+        then:
+        def ex = thrown(IllegalArgumentException)
+        ex.message == "`${side}` cannot be negative"
+
+        where:
+        side1 | side2
+        -2    | -3
+        -3    | 2
+        3     | -2
+
+        side = side1 > 0 ? "side2" : "side1"
+
+    }
 
     /**
      * <p>TODO #03: Write a feature method for {@link Exercises#median(java.util.Collection)}.
