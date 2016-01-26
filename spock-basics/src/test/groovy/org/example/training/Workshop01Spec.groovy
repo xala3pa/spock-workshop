@@ -1,6 +1,7 @@
 package org.example.training
 
 import org.junit.Assert
+import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -15,7 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat
 class Workshop01Spec extends Specification {
     def exercises = new Exercises()
 
-    def samplePeople = [
+    @Shared def samplePeople = [
             new Person(firstName: "Joe", lastName: "Bloggs"),
             new Person(firstName: "Jill", lastName: "Dash"),
             new Person(firstName: "Arthur", lastName: "Dent"),
@@ -87,6 +88,15 @@ class Workshop01Spec extends Specification {
      * <p>TODO #04: Write a feature method for {@link Exercises#fullNames(java.util.List)}.
      * You can use the {@code samplePeople} property as a source of test data.</p>
      */
+    def "Get a list of full names of people"() {
+        expect: "A list of full names of a given Person Objects"
+        exercises.fullNames(people) == expected
+
+        where:
+        people        | expected
+        []            | []
+        samplePeople  | ["Joe Bloggs", "Jill Dash", "Arthur Dent", "Selina Kyle"]
+    }
 
     /**
      * <p>TODO #05: Write a feature method for {@link Exercises#createPeople(java.util.List)}.
