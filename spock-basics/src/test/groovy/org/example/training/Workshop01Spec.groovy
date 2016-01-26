@@ -70,6 +70,18 @@ class Workshop01Spec extends Specification {
      * Be sure to check the behaviour for both odd and even numbers of elements
      * as well as an empty collection.</p>
      */
+    @Unroll
+    def "calculate de median for number collection: #nums"() {
+        expect: "The median of a numbers collections is calculated correctly"
+        exercises.median(nums) == expected_result
+
+       where:
+       nums              |  expected_result
+       [1]               |  1
+       [1, 2 , 3]        |  2
+       [2, 4, 9, -2, 0]  |  2
+       [1, 1, 2, 2]      |  1.5
+    }
 
     /**
      * <p>TODO #04: Write a feature method for {@link Exercises#fullNames(java.util.List)}.
