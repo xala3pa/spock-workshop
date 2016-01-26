@@ -4,6 +4,8 @@ import org.junit.Assert
 import spock.lang.Specification
 import spock.lang.Unroll
 
+import static org.hamcrest.CoreMatchers.containsString
+import static org.hamcrest.MatcherAssert.assertThat
 /**
  * These are the first set of exercises for the Spock workshop. All you need
  * to do is write some feature methods to verify the behaviour of the methods
@@ -50,7 +52,8 @@ class Workshop01Spec extends Specification {
 
         then:
         def ex = thrown(IllegalArgumentException)
-        ex.message == "`${side}` cannot be negative"
+        println ex.message
+        assertThat(ex.message, containsString("`${side}` cannot be negative"))
 
         where:
         side1 | side2
