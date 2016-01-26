@@ -1,7 +1,11 @@
 package org.example.training
 
+import org.junit.Assert
 import spock.lang.Specification
+import spock.lang.Unroll
 
+import static org.hamcrest.CoreMatchers.containsString
+import static org.hamcrest.MatcherAssert.assertThat
 /**
  * These are the first set of exercises for the Spock workshop. All you need
  * to do is write some feature methods to verify the behaviour of the methods
@@ -22,12 +26,44 @@ class Workshop01Spec extends Specification {
      * method. Think of suitable data sets, such as what happens if one or both
      * sides are zero.</p>
      */
+    @Unroll
+    def "calculate hypotenuse length for sides #side1 and #side2"() {
+        expect: "hypotenuse length is calculated correctly"
+        Assert.assertEquals(exercises.hypotenuseLength(side1, side2,), expected, 0.001)
+
+        where:
+        side1 | side2 | expected
+        0     | 3     | 3
+        3     | 0     | 3
+        0     | 0     | 0
+        1     | 1     | 1.414D
+        5     | 4     | 6.403D
+    }
 
     /**
      * <p>TODO #02: Write a feature method for {@link Exercises#hypotenuseLength(double, double)}
      * that checks the behaviour when either argument is negative. The method
      * should throw an IllegalArgumentException in this case.</p>
      */
+    @Unroll
+    def "should throw an IllegalArgumentException when #side1 or #side2 is negative"() {
+        when: "I calculate the hypotenuse with negatives side lengths"
+        exercises.hypotenuseLength(side1, side2)
+
+        then:
+        def ex = thrown(IllegalArgumentException)
+        println ex.message
+        assertThat(ex.message, containsString("`${side}` cannot be negative"))
+
+        where:
+        side1 | side2
+        -2    | -3
+        -3    | 2
+        3     | -2
+
+        side = side1 > 0 ? "side2" : "side1"
+
+    }
 
     /**
      * <p>TODO #03: Write a feature method for {@link Exercises#median(java.util.Collection)}.
