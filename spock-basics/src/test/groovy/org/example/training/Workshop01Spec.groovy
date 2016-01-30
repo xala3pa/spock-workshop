@@ -115,7 +115,7 @@ class Workshop01Spec extends Specification {
         then: "I get a List of people with the correct names"
         peopleList.every { it instanceof Person}
         peopleList.size() == peopleNames.size()
-        peopleList.find() { it.firstName == "Jill" && it.lastName}
+        peopleList.find() { it.firstName == "Jill" && it.lastName == "Dash"}
     }
 
     /**
@@ -124,4 +124,6 @@ class Workshop01Spec extends Specification {
      * either have to use the files in the test <em>resources</em> directory
      * or mock the creation of the {@code File} somehow.</p>
      */
+
+
 }
