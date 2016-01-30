@@ -14,6 +14,8 @@ import static org.hamcrest.MatcherAssert.assertThat
  * to handle exceptions and multiple data sets.
  */
 class Workshop01Spec extends Specification {
+
+    static final String FILE_PATH = "spock-basics/src/test/resources/README.txt"
     def exercises = new Exercises()
 
     @Shared def samplePeople = [
@@ -124,6 +126,8 @@ class Workshop01Spec extends Specification {
      * either have to use the files in the test <em>resources</em> directory
      * or mock the creation of the {@code File} somehow.</p>
      */
-
-
+    def "Calculate the number of characters in a File"(){
+        expect: "The correct numbers o characters returned"
+        exercises.characterCount(FILE_PATH) == 6874
+    }
 }
