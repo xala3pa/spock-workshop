@@ -14,6 +14,8 @@ import static org.hamcrest.MatcherAssert.assertThat
  * to handle exceptions and multiple data sets.
  */
 class Workshop01Spec extends Specification {
+
+    static final String FILE_PATH = "spock-basics/src/test/resources/README.txt"
     def exercises = new Exercises()
 
     @Shared def samplePeople = [
@@ -76,18 +78,19 @@ class Workshop01Spec extends Specification {
         expect: "The median of a numbers collections is calculated correctly"
         exercises.median(nums) == expected_result
 
-       where:
-       nums              |  expected_result
-       [1]               |  1
-       [1, 2 , 3]        |  2
-       [2, 4, 9, -2, 0]  |  2
-       [1, 1, 2, 2]      |  1.5
+        where:
+        nums              |  expected_result
+        [1]               |  1
+        [1, 2 , 3]        |  2
+        [2, 4, 9, -2, 0]  |  2
+        [1, 1, 2, 2]      |  1.5
     }
 
     /**
      * <p>TODO #04: Write a feature method for {@link Exercises#fullNames(java.util.List)}.
      * You can use the {@code samplePeople} property as a source of test data.</p>
      */
+    @Unroll
     def "Get a list of full names of people"() {
         expect: "A list of full names of a given Person Objects"
         exercises.fullNames(people) == expected
@@ -104,6 +107,18 @@ class Workshop01Spec extends Specification {
      * of {@link Person} objects. Note that {@code Person} is annotated with
      * {@code @Canonical}, they can be easily compared with {@code equals()}.</p>
      */
+    def "Create a collection of Person objects from a list of names"(){
+        given: "A list a people names"
+        def peopleNames = ["Joe Bloggs", "Jill Dash", "Arthur Dent", "Selina Kyle"]
+
+        when: "I create a people list"
+        def peopleList = exercises.createPeople(peopleNames)
+
+        then: "I get a List of people with the correct names"
+        peopleList.every { it instanceof Person}
+        peopleList.size() == peopleNames.size()
+        peopleList.find() { it.firstName == "Jill" && it.lastName == "Dash"}
+    }
 
     /**
      * <p>TODO #06: (Optional) Write a feature method for {@link Exercises#characterCount(java.lang.String)}.
@@ -111,4 +126,8 @@ class Workshop01Spec extends Specification {
      * either have to use the files in the test <em>resources</em> directory
      * or mock the creation of the {@code File} somehow.</p>
      */
+    def "Calculate the number of characters in a File"(){
+        expect: "The correct numbers o characters returned"
+        exercises.characterCount(FILE_PATH) == 6874
+    }
 }

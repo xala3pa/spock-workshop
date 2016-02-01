@@ -8,7 +8,7 @@ import java.util.List;
  * Created by pledbrook on 10/12/2015.
  */
 public class EventBus {
-    private List<Listener> listeners = new LinkedList<Listener>();
+    private List<Listener> listeners = new LinkedList<>();
 
     public EventBus register(Listener l) {
         listeners.add(l);
