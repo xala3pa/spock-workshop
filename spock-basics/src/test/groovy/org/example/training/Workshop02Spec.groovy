@@ -3,6 +3,7 @@ package org.example.training
 import org.example.training.events.EventBus
 import org.example.training.events.Listener
 import spock.lang.Specification
+import spock.util.concurrent.BlockingVariable
 
 /**
  * These are the second set of exercises for the Spock workshop, which introduce
@@ -43,4 +44,33 @@ class Workshop02Spec extends Specification {
      * {@code BlockingVariable} and {@code PollingConditions}. Either of these
      * will help you create a test that runs reliably.</p>
      */
+    def "All registered listeners have to received the given message"(){
+        given: "A message"
+        def message = "SPock is awesome!!"
+
+        and: "listeners registered in the bus"
+        def listener1Called = false
+        eventBus.register({ String msg ->
+            assert msg == message
+            listener1Called = true
+        })
+
+        def listener2Called = false
+        eventBus.register({ String msg ->
+            assert msg == message
+            listener2Called = true
+        })
+
+        and: "A blocking variable that's released when send has completed"
+        def completed = new BlockingVariable<Boolean>()
+
+        when: "I send the test message to the event bus"
+        eventBus.sendAsync(message, {-> completed.set(true)})
+
+        then: "Both listeners receive that message"
+        completed.get()
+        listener1Called && listener2Called
+
+
+    }
 }
